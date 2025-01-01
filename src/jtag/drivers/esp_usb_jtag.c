@@ -443,8 +443,9 @@ static int esp_usb_jtag_reset(int trst, int srst)
 /* required for RUNTEST IDLE command */
 void esp_usb_jtag_stableclocks(int num)
 {
-    LOG_DEBUG_IO("esp_usb_jtag: doing %i stableclocks. (TODO)", num);
-    esp_usb_jtag_write_rlestream(CMD_CLK(0,0,0), num);
+    int tms = (tap_get_state() == TAP_RESET ? 1 : 0);
+    LOG_DEBUG_IO("esp_usb_jtag: doing %i stableclocks.", num);
+    esp_usb_jtag_write_rlestream(CMD_CLK(0,0,tms), num);
 }
 
 /* Called by bitq to see if the IN data already is returned to the host. */
