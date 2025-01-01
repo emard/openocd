@@ -17,6 +17,7 @@ struct bitq_interface {
 
 	int (*sleep)(unsigned long us);
 	int (*reset)(int trst, int srst);
+	void (*stableclocks)(int num);
 
 	/* delayed read of requested TDO data,
 	 * the input shall be checked after call to any enqueuing function

@@ -253,8 +253,15 @@ int bitq_execute_queue(struct jtag_command *cmd_queue)
 				bitq_in_proc();
 			break;
 
+		case JTAG_STABLECLOCKS:
+			LOG_DEBUG_IO("stableclocks for runtest %i", cmd->cmd.runtest->num_cycles);
+			bitq_interface->stableclocks(cmd->cmd.runtest->num_cycles);
+			if (bitq_interface->in_rdy())
+				bitq_in_proc();
+			break;
+
 		default:
-			LOG_ERROR("BUG: unknown JTAG command type encountered");
+			LOG_ERROR("BUG: unknown JTAG command type %i encountered", cmd->type);
 			exit(-1);
 		}
 
